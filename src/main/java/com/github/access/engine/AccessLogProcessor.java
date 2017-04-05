@@ -39,6 +39,7 @@ public class AccessLogProcessor {
 
         // ips with security breach history (tried to access /admin url more than 5 times)
         Map<String, Integer> ipBlackListMap = lines.filter(line -> StringUtils.contains(line, "/admin"))
+                .filter(line -> StringUtils.contains(line, "403"))
                 .map(line -> StringUtils.substring(line, 0, line.indexOf(" ")))
                 .mapToPair(ip -> Tuple2.apply(ip, 1))
                 .reduceByKey((a, b) -> a + b)
